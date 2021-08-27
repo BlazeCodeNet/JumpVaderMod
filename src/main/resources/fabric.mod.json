@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "jumpvader",
   "version": "${version}",
 
-  "name": "ExampleMod",
-  "description": "A server-side mod",
+  "name": "JumpVader",
+  "description": "A fabric vertical elevator mod completely server-side through use of Vanillify API",
   "authors": [
     "BlazeCode",
     "Cosmix"
   ],
   "contact": {
     "homepage": "https://github.com/BlazeCodeNet",
-    "sources": "https://github.com/BlazeCodeNet/fabric-template"
+    "sources": "https://github.com/BlazeCodeNet/JumpVaderMod"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/jumpvader/icon.png",
 
   "environment": "server",
   "entrypoints": {
     "server": [
-      "net.blazecode.example.ExampleMod"
+      "net.blazecode.jumpvaders.JumpVaderMod"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "jumpvader.mixins.json"
   ],
 
   "depends": {

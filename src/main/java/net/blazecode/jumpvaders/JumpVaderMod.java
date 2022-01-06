@@ -37,7 +37,7 @@ public class JumpVaderMod implements DedicatedServerModInitializer
 	@Config(name = MODID)
 	public static class ModConfig implements ConfigData
 	{
-		@Comment("Toggles the entire mod on or off - NOT IMPLIMENTED")
+		@Comment("Toggles the entire mod on or off; !THIS ISNT IMPLIMENTED YET!")
 		boolean enabled = true;
 	}
 }

@@ -3,7 +3,7 @@ package net.blazecode.jumpvaders.blocks;
 import net.blazecode.jumpvaders.JumpVaderMod;
 import net.blazecode.jumpvaders.ifaces.BlockActionListener;
 import net.blazecode.vanillify.api.VanillaUtils;
-import net.blazecode.vanillify.api.block.ServerBlock;
+import net.blazecode.vanillify.api.interfaces.BlockStateProxy;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,48 +22,21 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class JumpVaderBlock extends ServerBlock implements BlockActionListener
+public class JumpVaderBlock extends Block implements BlockActionListener, BlockStateProxy
 {
     public JumpVaderBlock(  )
     {
-        super( Blocks.SEA_LANTERN, new Identifier( JumpVaderMod.MODID, "jumpvader_block" ), FabricBlockSettings.of( Material.STONE ), VanillaUtils.getText( "Jumper Vader", Formatting.LIGHT_PURPLE ) );
+        super( FabricBlockSettings.of( Material.STONE ).strength( 4.0f ).requiresTool() );
     }
-
-    @Override
-    public void scheduledTick( BlockState state , ServerWorld world , BlockPos pos , Random random )
-    {
-        if(world.isClient)
-            return;
-
-        world.getBlockTickScheduler().schedule( pos, this, 15 );
-        ServerWorld w = (ServerWorld ) world;
-
-        w.spawnParticles( ParticleTypes.END_ROD, pos.getX() + 0.5f, pos.getY() + 1.25f, pos.getZ() + 0.5f, 3, 0.25f, 0.25f, 0.25f, 0.01f );
-    }
-
-    @Override
-    public void onBlockAdded( BlockState state , World world , BlockPos pos , BlockState oldState , boolean notify )
-    {
-        super.onBlockAdded( state , world , pos , oldState , notify );
-        if(world.isClient)
-            return;
-
-        if(!world.getBlockTickScheduler().isTicking( pos, this ))
-        {
-           world.getBlockTickScheduler().schedule( pos, this, 5 );
-        }
-    }
-
-
 
     @Override
     public boolean onJump( BlockPos pos , ServerPlayerEntity player )
     {
         pos = pos.up();
-        ServerWorld w = player.getServerWorld();
+        ServerWorld w = player.getWorld();
         int count = 0;
 
-        while(count < 100 && pos.getY() < 256)
+        while(count < 300 && pos.getY() < 318)
         {
             Block blk = w.getBlockState( pos ).getBlock();
 
@@ -91,10 +64,10 @@ public class JumpVaderBlock extends ServerBlock implements BlockActionListener
     public void onCrouch( BlockPos pos , ServerPlayerEntity player )
     {
         pos = pos.down();
-        ServerWorld w = player.getServerWorld();
+        ServerWorld w = player.getWorld();
         int count = 0;
 
-        while(count < 100 && pos.getY() < 256)
+        while(count < 300 && pos.getY() >= -64)
         {
             Block blk = w.getBlockState( pos ).getBlock();
 
@@ -117,4 +90,24 @@ public class JumpVaderBlock extends ServerBlock implements BlockActionListener
         }
 
     }
+
+    @Override
+    public BlockState getClientBlockState( BlockState blockState )
+    {
+        return Blocks.SEA_LANTERN.getDefaultState();
+    }
+
+    @Override
+    public Identifier getIdentifier( )
+    {
+        return new Identifier( JumpVaderMod.MODID, "jumpvader_block" );
+    }
+
+    @Override
+    public String getDisplayName( )
+    {
+        return "JumpVader";
+    }
+
+    private static final Identifier _identifier = new Identifier( JumpVaderMod.MODID, "jumpvader_block" );
 }
